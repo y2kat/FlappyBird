@@ -8,12 +8,14 @@ public class Player : MonoBehaviour
     private NewInput inputActions;
 
     [SerializeField] private float speed;
+
     private PoolScript bulletPool;
     private Rigidbody2D rb;
 
     private void Awake()
     {
         inputActions = new NewInput();
+        bulletPool = GameObject.Find("BulletPool").GetComponent<PoolScript>(); //se hace referencia al script y el objeto específico!!
     }
 
     private void Start()
@@ -38,6 +40,8 @@ public class Player : MonoBehaviour
 
     private void Shoot(InputAction.CallbackContext context)
     {
-        Debug.Log("Dispara");
+        GameObject bullet = bulletPool.RequestObject(); //
+        bullet.SetActive(true);
+        bullet.transform.position = transform.position;
     }
 }

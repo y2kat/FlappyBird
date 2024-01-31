@@ -40,13 +40,24 @@ public class PoolScript : MonoBehaviour
 
     public GameObject RequestObject()
     {
-        if(availableObjectList.Count != 0)
+        if (availableObjectList.Count != 0)
         {
-            return availableObjectList[0];
+            GameObject requestedObject = availableObjectList[0];
+            availableObjectList.RemoveAt(0); //como ya está creado el objeto se tiene que eliminar
+            activeObjectList.Add(requestedObject); //aquí se agrega a la lista de los objetos activos
+            return requestedObject;
         }
         else
         {
-            return null;
+            CreateObject(1);
+            return RequestObject(); //esto es un ciclo de recursión, una estructura de datos
         }
+    }
+
+    public void DespawnObject(GameObject objectToDespawn)
+    {
+        objectToDespawn.SetActive(false);
+        availableObjectList.Add(objectToDespawn);
+        activeObjectList.Remove(objectToDespawn);
     }
 }
